@@ -35,3 +35,44 @@ class pre_processing_module:
                 to_be_replaced[var] = org
             
         return to_be_replaced
+    
+    def define_line_remover(self):
+        splitted_s = self.s.split('\n')
+        edited_s = ''
+
+        for line in splitted_s:
+            line = line.strip()
+            if(line.startswith('#define')):
+                pass
+            else:
+                edited_s += line + '\n'
+        
+        self.s = edited_s
+
+    
+    def package_printing_remover(self):
+        prog_string = self.s
+        prog_line = prog_string.split("\n")
+        edit_string = ""
+        remove_print = "cout"
+        edited_string = []
+        for x in prog_line:
+            x = x.strip()
+            edit_string = ""
+            if (x.startswith("#") and not x.startswith("#define")):
+                pass
+            else:
+                try:
+                    prog_string = x.index(remove_print)
+                except ValueError:
+                    edit_string = edit_string + x + ""
+                else:
+                    current_index = 0
+                    while(current_index < prog_string):
+                        edit_string += x[current_index]
+                        current_index += 1
+            if(edit_string != ""):
+                edited_string.append(edit_string)
+        self.s = ""
+        for i in edited_string:
+            self.s += i + '\n'
